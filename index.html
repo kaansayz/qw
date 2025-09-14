@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Esiyla İçin Özel Sürpriz</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Poppins', sans-serif; overflow-x:hidden; scroll-behavior:smooth; background:#fff; }
+
+/* Bölümler */
+section {
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  font-size:2em;
+  text-align:center;
+  padding: 0 20px;
+  color:white;
+  position:relative;
+  opacity:0;
+  transform: translateY(50px);
+  transition: all 1s ease;
+}
+section.visible { opacity:1; transform:translateY(0); }
+
+#sec1 { background:linear-gradient(135deg,#ff6f61,#ff9a8b);}
+#sec2 { background:linear-gradient(135deg,#6b5b95,#b8a9c9);}
+#sec3 { background:linear-gradient(135deg,#88b04b,#c5e99b);}
+#sec4 { background:linear-gradient(135deg,#f7cac9,#fceade); color:black;}
+#sec5 { background:linear-gradient(135deg,#ffcc5c,#fff1a8); color:black;}
+
+/* Butonlar */
+.btn {
+  padding:15px 30px;
+  font-size:1.2em;
+  cursor:pointer;
+  border:none;
+  border-radius:15px;
+  margin:10px;
+  transition:0.3s;
+  background:#ff6f61;
+  color:white;
+  font-weight:600;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+.btn:hover { transform: scale(1.1); background:#ff3b3b; }
+
+/* Zarf tasarımı */
+.envelope {
+  width:150px;
+  height:100px;
+  background:#fff;
+  border:2px solid #ccc;
+  border-radius:10px;
+  position:relative;
+  cursor:pointer;
+  margin:20px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:black;
+  font-weight:600;
+  transition:0.5s;
+}
+.envelope:hover { transform:translateY(-10px) scale(1.05); }
+
+/* Not gizli */
+.note {
+  display:none;
+  position:absolute;
+  background:#fff;
+  color:black;
+  padding:15px;
+  border-radius:10px;
+  top:120%;
+  width:200px;
+  font-size:0.8em;
+  box-shadow:0 5px 15px rgba(0,0,0,0.3);
+  text-align:center;
+  z-index:10;
+}
+
+/* Emoji animasyonları */
+.emoji { position:absolute; font-size:2em; pointer-events:none; animation: floatUp 1s forwards; }
+@keyframes floatUp {0% { opacity:1; transform:translateY(0) scale(1);} 100% { opacity:0; transform:translateY(-120px) scale(1.5);}}
+
+/* Shake animasyonu */
+@keyframes shake {0%,100%{transform:translateY(0);} 25%{transform:translateY(-10px);} 50%{transform:translateY(10px);} 75%{transform:translateY(-10px);}}
+.shake { animation: shake 0.5s infinite; }
+
+/* Yazı efektleri */
+.fadeText { opacity:0; animation:fadeIn 2s forwards; }
+@keyframes fadeIn { to {opacity:1;} }
+</style>
+</head>
+<body>
+
+<!-- Bölüm 1 -->
+<section id="sec1">
+  <div class="fadeText">Merhaba Esiyla! 👋</div>
+  <div class="fadeText" style="animation-delay:0.5s;">Senin için ufak bir sürpriz hazırladım…</div>
+</section>
+
+<!-- Bölüm 2 -->
+<section id="sec2">
+  <div class="envelope" onclick="openNote(this)">
+    Zarf 1
+    <div class="note">Senin gülüşünü gördüğüm ilk an unutulmazdı… 😍</div>
+  </div>
+  <div class="envelope" onclick="openNote(this)">
+    Zarf 2
+    <div class="note">Her düşündüğümde kalbim hızlı atıyor 💖</div>
+  </div>
+</section>
+
+<!-- Bölüm 3 -->
+<section id="sec3">
+  <div class="envelope" onclick="openNote(this)">
+    Zarf 3
+    <div class="note">Hayatımı seninle paylaşmak istiyorum 🌟</div>
+  </div>
+</section>
+
+<!-- Bölüm 4 -->
+<section id="sec4">
+  <div class="fadeText">Esiyla, benimle çıkarmısın? 💌<br><br></div>
+  <button class="btn" onclick="yesFun()">Evet!</button>
+  <button class="btn" onclick="noFun()">Hayır</button>
+</section>
+
+<!-- Bölüm 5 Sonrası -->
+<section id="sec5">
+  <div class="fadeText" id="finalMsg">Teşekkürler!</div>
+</section>
+
+<script>
+// Kaydırma ile görünür yapma
+const sections = document.querySelectorAll('section');
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY + window.innerHeight/1.2;
+  sections.forEach(sec=>{
+    if(sec.offsetTop < scrollY){
+      sec.classList.add('visible');
+    }
+  });
+});
+
+// Zarf açma fonksiyonu
+function openNote(el){
+  const note = el.querySelector('.note');
+  note.style.display = 'block';
+  setTimeout(()=>{ note.style.display='none'; nextSection(); },2500);
+}
+
+// Sonraki bölüme otomatik geçiş
+function nextSection(){
+  const visible = Array.from(sections).filter(s=>s.classList.contains('visible'));
+  const nextIndex = visible.length;
+  if(sections[nextIndex]){
+    sections[nextIndex].classList.add('visible');
+    window.scrollTo({top:sections[nextIndex].offsetTop, behavior:'smooth'});
+  }
+}
+
+// Evet butonu
+function yesFun(){
+  for(let i=0;i<40;i++){
+    const span = document.createElement('span');
+    span.className='emoji';
+    span.innerText = ['❤️','💐','🌸','🌹'][Math.floor(Math.random()*4)];
+    span.style.left=Math.random()*90+'%';
+    span.style.top=Math.random()*80+'%';
+    span.style.fontSize=(20+Math.random()*30)+'px';
+    document.body.appendChild(span);
+    setTimeout(()=>{ span.remove(); },2000);
+  }
+  document.getElementById('finalMsg').innerText = "Harika! 💕 Seninle hayatımı paylaşmak için sabırsızlanıyorum…";
+  nextSection();
+}
+
+// Hayır butonu
+function noFun(){
+  const sec = document.getElementById('sec4');
+  sec.classList.add('shake');
+  setTimeout(()=>{ sec.classList.remove('shake'); },1000);
+  alert("Hmm… belki sonra 😂 Ama yine de seni seviyorum!");
+  // Sayfa başa dön
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+
+</body>
+</html>
